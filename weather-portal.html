@@ -1,0 +1,252 @@
+
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <style type="text/css">
+
+/* Style the form */
+#regForm {
+  background-color: #ffffff;
+  margin: 100px auto;
+  padding: 40px;
+  width: 70%;
+  min-width: 300px;
+}
+
+/* Style the input fields */
+.input {
+  padding: 10px;
+  width: 50%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+  margin: 5px;
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+  </style>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="text/javascript">
+    
+    var cities = {}
+
+    function store_city() {
+      weather_parameters = [];
+      city_name = document.getElementById("city_name").value;
+      if (city_name.trim() === "") {
+        alert("City name cannot be empty")
+        return;
+      }
+
+      year = document.getElementById("year").value;
+      var yearRegEx = /^\d{4}$/;
+      y_format = year.match(yearRegEx);
+      if (!y_format) {
+        alert("Year should contain 4 digits.");
+        return;
+      }
+
+      //Assignment1 TODOs:
+      /*
+        1. Retrieve month from DOM; 
+        2. Add check on month - should be 2 digit number.
+      */
+      month = document.getElementById("month").value;
+      var monthRegEx = /^\d{2}$/;
+      m_format = month.match(monthRegEx);
+      if (!m_format) {
+        alert("Month should contain 2 digits.");
+        return;
+      }
+      m_num = Number(month)
+      if (!Number.isInteger(m_num) || m_num < 1 || m_num > 12) {
+        alert("Month must be between 1 and 12");
+        return;
+      }
+
+
+      if (document.querySelector('input[name="max_temp"]:checked')) {
+          weather_parameters.push(document.getElementById("max_temp").value);
+      }
+
+      //Assignment1 TODOs:
+      /*
+        1. Verify if min_temp, precipitation and snow are checked; 
+        2. Add them to weather_parameters if they are checked.
+      */
+
+      if (document.querySelector('input[name="min_temp"]:checked')) {
+          weather_parameters.push(document.getElementById("min_temp").value);
+      }
+      if (document.querySelector('input[name="precipitation"]:checked')) {
+          weather_parameters.push(document.getElementById("precipitation").value);
+      }
+      if (document.querySelector('input[name="snow"]:checked')) {
+          weather_parameters.push(document.getElementById("snow").value);
+      }
+
+      if (weather_parameters.length === 0) {
+        alert("At least one box must be checked");
+        return;
+      }
+
+      city_details = {};
+      city_details['year'] = year;
+      city_details['month'] = month;
+      city_details['weather_parameters'] = weather_parameters;
+
+      //Assignment1 TODO:
+      //Add month to city_details
+
+      cities[city_name] = city_details;
+
+      //Assignment1 TODO: Add an anchor element instead of label element city_name
+      // Clicking the anchor element should show an alert with the lesson details
+      city = document.createElement("li");
+      city.setAttribute("id", city_name + "-li");
+
+      city_link = document.createElement("a");
+      city_link.setAttribute("href", "#");
+      city_link.setAttribute("onclick", "show_city('" + city_name + "')");
+      city_link.innerHTML = city_name;
+
+      city.appendChild(city_link);
+      document.getElementById("city_list").appendChild(city);
+    }
+
+    function show_city(city_name) {
+      const city = cities[city_name];
+      const message = city_name + ", " + city.year + ", " + city.month + ", " + city.weather_parameters.join(", ");
+      alert(message);
+    }
+
+    function show_settings() {
+       alert("Settings called.");
+    }
+
+    function logout() {
+      alert("Logout called.");
+    }
+
+    function display_new_run_form() {
+      newRunFormDiv = document.getElementById("newRunFormDiv");
+      newRunFormDiv.setAttribute("style", "display:block;");
+
+      statusDiv = document.getElementById("status");
+      statusDiv.setAttribute("style", "display:none;");
+  }
+  </script>
+
+</head>
+	<body>
+		<div class="container-fluid" style="background-color:transparent">
+		      <div class="row">
+        		<div class="col">
+          			<div class="text-left">
+            				<a href="https://www.cs.utexas.edu/~devdatta" target="_blank">MWA</a>
+          			</div>
+        		</div>
+        		<div><h5 style="margin-top:5px;">Personal Weather Portal </h5></div>
+        		<div class="col text-right">
+          			<div class="dropdown">
+            				<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">  testuser
+              				<span class="caret"></span>
+            				</button>
+            				<ul class="dropdown-menu text-center" aria-labelledby="dropdownMenu1">
+            				  <li><a href="#" onclick="show_settings()">Settings</a></li>
+             				  <li><hr class="dropdown-divider"></li>
+              				  <li><a href="#" onclick="logout()">Logout</a></li>
+            				</ul>
+          			</div>
+        			</div>
+      			</div>
+		</div>
+		<hr></hr>
+
+		<div class="container-fluid">
+		<div class="row  mvh-100 flex-column flex-md-row">
+        	<div class="col-md-2 div_left" style="height:90vh;background-color: lightblue;float:left; margin-top:-16px;">
+			<div class="row" id="newrun">
+				<button onclick="display_new_run_form()" style="margin-left:5px;margin-top:5px">Register City</button>
+			</div>
+			<hr></hr>
+      <div class="row"> <!-- row2 -->
+			<div>
+			              <ul id="city_list">
+              			</ul>
+			</div>
+          		</div> <!-- row2 -->
+		</div>
+
+		<div class="col-md-10 flex-grow-1 div_right" id="entity-form-container">
+
+			<div id="status" style="{{status_style}}">
+				<div id="status_string"></div>
+				<div id="outputImg"></div>
+			</div>
+
+		<div style="{{regForm_style}}" id="newRunFormDiv">
+		<!-- <form id="regForm" action="" style="margin-top:-10px;"> -->
+
+		<label>City Name</label>
+		<input class="input" type="text" placeholder="city name" name="city_name" id="city_name" required>
+		<br></br>
+		<br></br>
+		<div class="tab1"><b style="color:blue;">Inputs:</b>
+			<table>
+			<tr>
+				<td><label>Year</label></td>
+				<td><input class="input" type="text" placeholder="YYYY" name="year" id="year" style="width:125%" required></input></td>
+      </tr>
+      <!-- Assignment1 TODO: Add Month -->
+      <tr>
+				<td><label>Month</label></td>
+				<td><input class="input" type="text" placeholder="MM" name="month" id="month" style="width:125%" required></input></td>
+      </tr>
+
+	     <tr>
+        <td><label class="label">Weather Parameters</label></td>
+			</tr>
+			<tr>
+				<td></td>
+        <td>
+            <input type="checkbox" name="max_temp" id="max_temp" value="max_temp">Max Temperature</input><br></br>
+            <input type="checkbox" name="min_temp" id="min_temp" value="min_temp">Min Temperature</input><br></br>
+            <input type="checkbox" name="precipitation" id="precipitation" value="precipitation">Precipitation</input><br></br>
+            <input type="checkbox" name="snow" id="snow" value="snow">Snow</input><br></br>
+            <!-- Assignment1 TODO: Add Min Temperature on new line -->
+            <!-- Assignment1 TODO: Add Precipitation on new line -->
+            <!-- Assignment1 TODO: Add Snow on new line -->
+        </td>
+      </tr>
+
+			</table>
+			<button type="submit" onclick="store_city()" class="btn btn-primary">Submit</button>
+		</div>
+
+		<!-- </form> -->
+		</div>
+		</div>
+		</div>
+
+
+  		<script src=../static/scripts/inputhandler.js></script>
+	</body>
+
+</html>
