@@ -4,7 +4,7 @@ WRF Web App
 name: Kevin Fang
 eid: kyf96
 githubusername: kfang1900
-app: http://ec2-3-107-49-205.ap-southeast-2.compute.amazonaws.com:5009
+app: ec2-3-107-49-205.ap-southeast-2.compute.amazonaws.com
 comments: N/A
 
 Run
