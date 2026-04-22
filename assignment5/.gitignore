@@ -1,0 +1,7 @@
+google_oauth_client_secret.json
+venv/
+*.db
+*.log
+data/
+__pycache__/
+*.pyc
